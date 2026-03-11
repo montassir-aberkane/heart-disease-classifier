@@ -6,23 +6,24 @@ from sklearn.preprocessing import StandardScaler
 
 def load_and_clean(path: str) -> pd.DataFrame:
     """Load heart disease dataset and perform cleaning steps."""
-    df = pd.read_csv(path)
-    
+    cols = ["age","sex","cp","trestbps","chol","fbs","restecg",
+            "thalach","exang","oldpeak","slope","ca","thal","num"]
+
+    df = pd.read_csv(path, names=cols)
+
     # Replace '?' with NaN (UCI dataset uses '?' for missing values)
     df.replace("?", np.nan, inplace=True)
-    
-    # Convert all columns to numeric
     df = df.apply(pd.to_numeric, errors="coerce")
-    
+
     # Drop rows with missing values (only 6 rows affected in this dataset)
     original_len = len(df)
     df.dropna(inplace=True)
     print(f"Dropped {original_len - len(df)} rows with missing values.")
-    
+
     # Binarize target: 0 = no disease, 1 = disease (values 1-4 → 1)
     df["target"] = (df["num"] > 0).astype(int)
     df.drop(columns=["num"], inplace=True)
-    
+
     return df
 
 
