@@ -1,5 +1,5 @@
-__pycache__
-.pyc
-.ipynb_checkpoints
-data.csv
-.pkl
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+data/
+*.pkl
