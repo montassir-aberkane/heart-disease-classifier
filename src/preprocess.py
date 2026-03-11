@@ -18,11 +18,15 @@ def load_and_clean(path: str) -> pd.DataFrame:
     # Drop rows with missing values (only 6 rows affected in this dataset)
     original_len = len(df)
     df.dropna(inplace=True)
+    assert len(df) == 297, f"Expected 297 rows after cleaning, got {len(df)}"
     print(f"Dropped {original_len - len(df)} rows with missing values.")
 
     # Binarize target: 0 = no disease, 1 = disease (values 1-4 → 1)
     df["target"] = (df["num"] > 0).astype(int)
     df.drop(columns=["num"], inplace=True)
+
+    # Verify target is binary
+    assert df["target"].isin([0, 1]).all(), "Target column contains unexpected values"
 
     return df
 
